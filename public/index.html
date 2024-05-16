@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>User Registration Form</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <h1>TODO APP</h1>
+    <h2>Login</h2>
+    <!-- <form id="registrationForm" action="/users" method="POST">
+      <label for="name">Name:</label>
+      <input type="text" id="name" name="name" required /><br /><br />
+
+      <label for="email">Email:</label>
+      <input
+        type="email"
+        id="email"
+        name="email"
+        required
+        placeholder="example@example.com"
+      /><br /><br />
+
+      <label for="password">Password:</label>
+      <input
+        type="password"
+        id="password"
+        name="password"
+        required
+      /><br /><br />
+
+      <button type="submit">Submit</button>
+    </form> -->
+
+    <form id="loginForm" action="/users" method="POST">
+      <label for="email">Email:</label>
+      <input
+        type="email"
+        id="emailLogin"
+        name="email"
+        required
+        placeholder="example@example.com"
+      /><br /><br />
+
+      <label for="password">Password:</label>
+      <input
+        type="password"
+        id="passwordLogin"
+        name="password"
+        required
+      /><br /><br />
+
+      <button type="submit">Zaloguj</button>
+    </form>
+    <br />
+    <button class="logout_btn" type="submit">Logout</button>
+    <script>
+      // document
+      //   .getElementById("registrationForm")
+      //   .addEventListener("submit", function (event) {
+      //     event.preventDefault(); // Zapobiega domyślnemu działaniu formularza
+
+      //     // Pobierz dane z formularza
+      //     const formData = {
+      //       name: document.getElementById("name").value,
+      //       email: document.getElementById("email").value,
+      //       password: document.getElementById("password").value,
+      //     };
+
+      //     // Wyślij dane do serwera za pomocą żądania AJAX
+      //     fetch("/users", {
+      //       method: "POST",
+      //       headers: {
+      //         "Content-Type": "application/json",
+      //       },
+      //       body: JSON.stringify(formData),
+      //     })
+      //       .then((response) => {
+      //         if (response.ok) {
+      //           return response.json();
+      //         } else {
+      //           throw new Error(response.json());
+      //         }
+      //       })
+      //       .then((data) => {
+      //         console.log("Dane zostały pomyślnie wysłane:", data);
+      //         // Tutaj możesz dodać odpowiednią obsługę, na przykład wyświetlenie komunikatu o sukcesie
+      //       })
+      //       .catch((error) => {
+      //         console.error(error);
+      //         // Tutaj możesz dodać odpowiednią obsługę błędu, na przykład wyświetlenie komunikatu o błędzie
+      //       });
+      //   });
+
+      document
+        .getElementById("loginForm")
+        .addEventListener("submit", function (event) {
+          event.preventDefault(); // Zapobiega domyślnemu działaniu formularza
+
+          // Pobierz dane z formularza
+          const loginFormData = {
+            email: document.getElementById("emailLogin").value,
+            password: document.getElementById("passwordLogin").value,
+          };
+
+          // Wyślij dane do serwera za pomocą żądania AJAX
+          fetch("/users/login", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(loginFormData),
+          })
+            .then((response) => {
+              if (response.ok) {
+                return response.json();
+              } else {
+                throw new Error(response.json());
+              }
+            })
+            .then((data) => {
+              console.log("Dane zostały pomyślnie wysłane:", data);
+            })
+            .catch((error) => {
+              console.error(error);
+            });
+        });
+
+      document
+        .querySelector(".logout_btn")
+        .addEventListener("click", (event) => {
+          event.preventDefault();
+          fetch("/users/logoutAll", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          })
+            .then((response) => {
+              if (response.ok) {
+                return response.json();
+              } else {
+                throw new Error(response.json());
+              }
+            })
+            .then((data) => {
+              console.log("Dane zostały pomyślnie wysłane:", data);
+            })
+            .catch((error) => {
+              console.error(error);
+            });
+        });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,11 @@
+* {
+}
+body {
+  background-image: linear-gradient(
+    to bottom,
+    rgb(31, 28, 28),
+    rgb(31, 163, 135)
+  );
+  height: 100vh;
+  color: whitesmoke;
+}
