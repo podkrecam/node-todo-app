@@ -7,11 +7,11 @@ const { sendWelcomeEmail, sendGoodbyeEmail } = require("../emails/account");
 // create user
 const createUser = async (req, res) => {
   const user = new User(req.body);
-
   try {
     await user.save();
-    sendWelcomeEmail(user.email, user.name.slice(0, user.name.indexOf(" ")));
+    sendWelcomeEmail(user.email, user.name.split(" ")[0]);
     const token = await user.generateAuthToken();
+    res.cookie("token", token, { httpOnly: true });
     res.status(201).send({ user, token });
   } catch (error) {
     res.status(400).send(error.message);
@@ -25,9 +25,10 @@ const loginUser = async (req, res) => {
       req.body.password
     );
     const token = await user.generateAuthToken();
+    res.cookie("token", token, { httpOnly: true });
     res.send({ user, token });
   } catch (error) {
-    res.status(400).send();
+    res.status(400).send(error.message);
   }
 };
 
@@ -40,7 +41,6 @@ const logoutUser = async (req, res) => {
     });
     // save changed user
     await req.user.save();
-
     res.send();
   } catch (error) {
     res.status(500).send();
@@ -92,10 +92,7 @@ const updateUser = async (req, res) => {
 const deleteUser = async (req, res) => {
   try {
     await req.user.deleteOne();
-    sendGoodbyeEmail(
-      req.user.email,
-      req.user.name.slice(0, req.user.name.indexOf(" "))
-    );
+    sendGoodbyeEmail(req.user.email, req.user.name.split(" ")[0]);
     res.send(req.user);
   } catch (error) {
     res.status(400).send(error.message);
@@ -109,7 +106,7 @@ const uploadProfileImage = async (req, res) => {
   }
 
   const buffer = await sharp(req.file.buffer)
-    .resize({ width: 250, height: 250 })
+    .resize({ width: 150, height: 150 })
     .png()
     .toBuffer();
 

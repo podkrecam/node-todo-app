@@ -30,11 +30,11 @@ const sendGoodbyeEmail = async (email, name) => {
   config;
   transporter;
   const message = {
-    subject: `Sorry to see you go, ${name}`,
-    from: process.env.EMAIL,
+    subject: `Sorry to see you go, ${name}!`,
+    from: "ToDo App " + "<" + process.env.EMAIL + ">",
     to: email,
-    text: `Goodbye ${name}, I hop to see you back sometime soon.`,
-    html: `<h1>Goodbye ${name}, I hop to see you back sometime soon.</h1>`,
+    text: `Goodbye ${name}, I hope to see you back sometime soon.`,
+    html: `<h1>Goodbye ${name}, I hope to see you back sometime soon.</h1>`,
   };
   await transporter.sendMail(message);
 };

@@ -34,7 +34,9 @@ const userSchema = mongoose.Schema(
           throw new Error('Your password cannot contain "password" word');
         }
         if (!validator.isStrongPassword(value, { minLength: 6 })) {
-          throw new Error("Your password is not strong enough");
+          throw new Error(
+            "Your password is too weak. Please choose a stronger password with at least 6 characters, including uppercase and lowercase letters, numbers, and special characters."
+          );
         }
       },
     },
@@ -44,6 +46,9 @@ const userSchema = mongoose.Schema(
       validate(value) {
         if (value < 0) {
           throw new Error("Age must be a positive number");
+        }
+        if (value > 100) {
+          throw new Error("Are you really that old?");
         }
       },
     },
@@ -55,7 +60,10 @@ const userSchema = mongoose.Schema(
         },
       },
     ],
-    avatar: { type: Buffer },
+    avatar: {
+      type: Buffer,
+      default: "asd",
+    },
   },
   {
     timestamps: true,
@@ -73,22 +81,22 @@ userSchema.statics.findByCredentials = async (email, password) => {
   const user = await User.findOne({ email: email });
 
   if (!user) {
-    throw new Error("Unable to login");
+    throw new Error("Wrong email or password");
   }
   // compare passwords
   const isMatch = await bcrypt.compare(password, user.password);
   if (!isMatch) {
-    throw new Error("Unable to login");
+    throw new Error("Wrong email or password");
   }
 
   return user;
 };
 
-// generate authorization token and save the token to the database
+// generate authorization token and save token to the database
 userSchema.methods.generateAuthToken = async function () {
   const user = this;
   const token = jwt.sign({ _id: user._id.toString() }, process.env.JWT_SECRET, {
-    expiresIn: "3 days",
+    expiresIn: "1 hour",
   });
 
   user.tokens = user.tokens.concat({ token });

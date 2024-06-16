@@ -21,9 +21,12 @@ const createTask = async (req, res) => {
 const getAllTasks = async (req, res) => {
   const match = {};
   const sort = {};
-
   if (req.query.completed) {
     match.completed = req.query.completed === "true";
+  }
+
+  if (req.query.category) {
+    match.category = req.query.category;
   }
 
   if (req.query.sortBy) {
@@ -41,8 +44,8 @@ const getAllTasks = async (req, res) => {
         sort,
       },
     });
-
-    res.send(req.user.tasks);
+    const tasks = req.user.tasks;
+    res.send(tasks);
   } catch (error) {
     res.status(500).send(error.message);
   }
