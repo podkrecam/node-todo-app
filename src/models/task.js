@@ -25,16 +25,7 @@ const taskSchema = mongoose.Schema(
       enum: ["Work", "Personal", "School", "Other"],
       default: "Other",
       trim: true,
-    },
-    deadline: {
-      type: Date,
-      default: Date.now,
-      validate: {
-        validator: function (value) {
-          return value > Date.now();
-        },
-        message: "Deadline must be a future date",
-      },
+       },
     },
   },
   {
