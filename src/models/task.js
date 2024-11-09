@@ -26,7 +26,6 @@ const taskSchema = mongoose.Schema(
       default: "Other",
       trim: true,
        },
-    },
   },
   {
     timestamps: true,
@@ -36,10 +35,6 @@ const taskSchema = mongoose.Schema(
 taskSchema.methods.toJSON = function () {
   const task = this;
   const taskObject = task.toObject();
-
-  if (taskObject.deadline) {
-    taskObject.deadline = moment(taskObject.deadline).format("YYYY/MM/DD");
-  }
 
   return taskObject;
 };
